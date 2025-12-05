@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhan Bahadur's Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ff007f, #00c3ff, #ffec00, #ff007f);
+            background-size: 400% 400%;
+            animation: flashy-gradient 15s ease infinite;
+            display: flex;
+        }
+
+        @keyframes flashy-gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Hero Text Animation */
+        @keyframes hero-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom styles for the timeline effect */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1rem;
+            top: 0.5rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 9999px;
+            background-color: #4F46E5;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px #4F46E5;
+        }
+        
+        .timeline-item-icon {
+            position: absolute;
+            left: -2.3rem; /* Adjust position to align with the timeline line */
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Card Hover Effect */
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Page sections are initially hidden */
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        /* Mobile Sidebar specific styles */
+        .sidebar {
+            /* Updated to use translate for smoother animation */
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        /* Media queries to handle responsiveness */
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 16rem; /* Adjust main content margin to account for sidebar width */
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Hamburger Menu for Mobile -->
+    <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-[100] p-2 bg-gray-900 text-white rounded-md focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar flex flex-col w-64 h-screen bg-gray-900 text-white p-6 shadow-lg fixed top-0 left-0 z-50">
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold">Dhan Bahadur</h2>
+            <p class="text-sm text-gray-400">My Story, My Path</p>
+        </div>
+        <ul class="space-y-4">
+            <li>
+                <a href="#home" class="nav-link flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 001 1h3m-6 0v-4a1 1 0 00-1-1h-2a1 1 0 00-1 1v4m-6 0h1a1 1 0 00-1 1v4a1 1 0 00-1 1v2" />
+                    </svg>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="#about-me" class="nav-link flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    About Me
+                </a>
+            </li>
+            <li>
+                <a href="#journey" class="nav-link flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Journey
+                </a>
+            </li>
+            <li>
+                <a href="#challenges" class="nav-link flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Challenges
+                </a>
+            </li>
+            <li>
+                <a href="#projects" class="nav-link flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.22 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Projects
+                </a>
+            </li>
+            <li>
+                <a href="#courses" class="nav-link flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.465 9.222 5 7.5 5S4.168 5.465 3 6.253v13C4.168 18.465 5.778 18 7.5 18s3.332.465 4.5 1.253m0-13C13.168 5.465 14.778 5 16.5 5s3.332.465 4.5 1.253v13C19.832 18.465 18.222 18 16.5 18s-3.332.465-4.5 1.253" />
+                    </svg>
+                    Courses
+                </a>
+            </li>
+            <li>
+                <a href="#interests" class="nav-link flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.051a.51.51 0 01.408 0l3.864 1.834a.51.51 0 00.511.066l4.288-1.715a.51.51 0 01.62.593l-.717 4.542a.51.51 0 00.165.485l3.415 3.328a.51.51 0 01-.14 1.056l-4.27.794a.51.51 0 00-.395.276l-1.916 4.148a.51.51 0 01-.933 0l-1.916-4.148a.51.51 0 00-.395-.276l-4.27-.794a.51.51 0 01-.14-1.056l3.415-3.328a.51.51 0 00.165-.485l-.717-4.542a.51.51 0 01.62-.593l4.288 1.715a.51.51 0 00.511-.066l3.864-1.834z" />
+                    </svg>
+                    Interests
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content flex-grow">
+
+        <!-- Home Section -->
+        <section id="home" class="page-section active">
+            <header class="bg-gray-100 py-24 md:py-36 text-center shadow-lg rounded-b-3xl">
+                <div class="container mx-auto px-6">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 animate-hero-text">A Journey in Progress</h1>
+                    <p class="text-lg md:text-2xl max-w-2xl mx-auto text-gray-700 animate-hero-text animation-delay-300">This is a story shaped by family, challenges, and a passion for learning.</p>
+                </div>
+            </header>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about-me" class="page-section">
+            <header class="bg-gray-100 py-12 md:py-20 text-center shadow-lg rounded-b-3xl">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">A Little About Me</h2>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-12">
+                        <!-- Profile Photo -->
+                        <div class="w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
+                            <img src="https://i.imgur.com/g7bnBu1.jpg" 
+                                 alt="Dhan Bahadur's profile photo"
+                                 class="rounded-full w-full h-full object-cover border-4 border-white shadow-lg transform transition-transform duration-300 hover:scale-105">
+                        </div>
+                        <!-- Description -->
+                        <div class="text-left max-w-2xl">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-3">Hi, I'm Dhan!</h3>
+                            <p class="text-lg leading-relaxed text-gray-600">
+                                I come from Gangzur village, in Dagana Dzongkhag. My life has been shaped by the love and support of my family, and guided by my father and brothers. While my childhood was spent loving nature and sports, my journey has also involved tackling significant obstacles, particularly in technology and adapting to the fast-paced life of a scholar. My passion for engineering stems from a desire to build practical, sustainable solutions, using the resilience gained from overcoming personal and academic hurdles.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </section>
+
+        <!-- Main Content Container -->
+        <main class="container mx-auto px-6 py-12 md:py-20 max-w-5xl">
+
+            <!-- Journey Section -->
+            <section id="journey" class="page-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-700">My Journey</h2>
+                
+                <!-- Introduction -->
+                <div class="mb-12 bg-white rounded-lg shadow-xl p-8 card">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4 text-center">The Beginning</h3>
+                    <p class="text-lg leading-relaxed text-center max-w-3xl mx-auto">
+                        I come from Gangzur village, in Dagana Dzongkhag, and my life has been shaped by the love and support of my family. As the eldest of three siblings, I have always been guided by my father and brothers. My early life was marked by a love for nature, playing football and basketball, and a deep interest in solving math problems.
+                    </p>
+                </div>
+
+                <!-- Milestones Section with Timeline Effect -->
+                <div class="relative mt-12">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-8 text-center">Key Milestones</h3>
+                    <div class="border-l-4 border-indigo-500 pl-12 md:pl-8">
+                        
+                        <!-- Milestone 1: YouTube Channel -->
+                        <div class="relative timeline-item pb-12">
+                             <span class="timeline-item-icon text-indigo-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197 2.132A1 1 0 0110 13.732V10.268a1 1 0 011.555-.832l3.197 2.132a1 1 0 010 1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </span>
+                            <h4 class="text-xl md:text-2xl font-semibold mb-2 text-indigo-600">Starting a Creative Journey (2020)</h4>
+                            <p class="text-gray-600 mb-2">I started a <a href="https://www.youtube.com/user/DhanBahadur" target="_blank" class="text-indigo-500 hover:text-indigo-700 transition-colors duration-200">YouTube channel</a> to create music lyric videos and school vlogs.</p>
+                            <p class="leading-relaxed">This venture taught me key skills in video editing, graphic design, and audio synchronization. It was through this project that I learned the entire production process, from planning to filming and editing, and eventually monetized my content. This experience instilled valuable lessons in creativity and project management.</p>
+                        </div>
+
+                        <!-- Milestone 2: Royal Academy & Nature -->
+                        <div class="relative timeline-item pb-12">
+                             <span class="timeline-item-icon text-indigo-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-2.275-2.275L15 17.25l-2.433-2.433a2 2 0 00-2.275 2.275l-.56 1.125a2 2 0 001.732 2.766l.866.433a2 2 0 002.222-.222l1.125-.56c.92-.46 1.133-1.442.56-2.275z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-2 2h4M4 10h16m-4 0a2 2 0 01-2 2h-2a2 2 0 01-2-2m-2-2h4m-4 0a2 2 0 110-4" />
+                                </svg>
+                            </span>
+                            <h4 class="text-xl md:text-2xl font-semibold mb-2 text-indigo-600">Growth at the Royal Academy</h4>
+                            <p class="text-gray-600 mb-2">My time here has been transformative, full of learning and personal growth.</p>
+                            <p class="leading-relaxed">I participated in nature retreats to places like Dongkala and Jomolhari, which taught me essential survival skills like outdoor cooking, setting up tents, and navigating trails. These experiences built my confidence and resilience in unfamiliar environments.</p>
+                        </div>
+
+                        <!-- Milestone 3: Scholarship and Mountaineering -->
+                        <div class="relative timeline-item pb-12">
+                            <!-- Wrapped the icon and heading in an anchor tag to make it a link -->
+                            <a href="#mountaineering-experiment" class="hover:opacity-75 transition-opacity duration-200">
+                                <span class="timeline-item-icon text-indigo-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v2zm0 4a2 2 0 002 2h14a2 2 0 002-2v-2a2 2 0 00-2-2H5a2 2 0 00-2 2v2z" />
+                                    </svg>
+                                </span>
+                                <h4 class="text-xl md:text-2xl font-semibold mb-2 text-indigo-600">A Month of Mountaineering</h4>
+                            </a>
+                            <p class="text-gray-600 mb-2">I earned a scholarship to the Himalayan Mountaineering Institute, gaining valuable technical skills.</p>
+                            <p class="leading-relaxed">This month-long course taught me rock climbing, rappelling, and survival skills. The experience also sparked my passion for photography, especially capturing the beauty of nature during bird watching activities with my team. It was one of the most memorable experiences of my life.</p>
+                            <div class="mt-4">
+                                <img src="https://ibb.co/hRCrWGwM" alt="Mountaineering at Himalayan Mountaineering Institute" class="rounded-lg shadow-lg w-full md:w-3/4 h-auto object-cover">
+                            </div>
+                        </div>
+                        
+                        <!-- Milestone 4: Career Aspirations -->
+                        <div class="relative timeline-item pb-12">
+                            <span class="timeline-item-icon text-indigo-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v6m3-3H9" />
+                                </svg>
+                            </span>
+                            <h4 class="text-xl md:text-2xl font-semibold mb-2 text-indigo-600">Looking to the Future</h4>
+                            <p class="text-gray-600 mb-2">I aspire to pursue a career in civil engineering.</p>
+                            <p class="leading-relaxed">My goal is to combine my diverse experiences, from STEM projects to product design, to create practical solutions for communities. I am passionate about contributing to the development of places like Gelephu, envisioning it as a "Mindfulness City" that balances sustainable infrastructure with well-being.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Challenges & Growth Section (NEW) -->
+            <section id="challenges" class="page-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-red-700">Challenges & Growth</h2>
+                <div class="space-y-8">
+                    
+                    <!-- Struggle 1: Academic Pressure and Self-Doubt -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl card border-t-4 border-red-500">
+                        <h3 class="text-xl font-semibold text-red-600 mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.24a2 2 0 00-2.193-.56l-9 3a2 2 0 00-1.897 1.258l-3 9A2 2 0 004 20h14a2 2 0 002-2V8a2 2 0 00-2-2h-3l-2-2z" />
+                            </svg>
+                            Overcoming Academic Pressure & Self-Doubt
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Transitioning to a highly competitive environment like the Royal Academy brought intense academic pressure. Initially, I struggled with the high expectations and experienced self-doubt that affected my performance.
+                        </p>
+                        <p class="mt-2 text-sm font-medium text-red-500">
+                            <strong class="text-gray-900">Result:</strong> I proactively sought mentorship, developed disciplined study habits, and focused on mastering core subjects, leading to significant improvement in my confidence and grades. This taught me the importance of resilience over instant success.
+                        </p>
+                    </div>
+
+                    <!-- Struggle 2: Technical Skill Gap (Coding) -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl card border-t-4 border-red-500">
+                        <h3 class="text-xl font-semibold text-red-600 mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            Bridging the Technical Gap (Coding)
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Coming from a background with limited exposure to programming, the STEM projects and the Python course felt overwhelming at first. I lacked the fundamental knowledge of algorithmic logic and syntax.
+                        </p>
+                        <p class="mt-2 text-sm font-medium text-red-500">
+                            <strong class="text-gray-900">Result:</strong> I committed to the "Python for Everybody" specialization, dedicating extra time outside of school hours. By focusing on practical application (like the Market Management Codes), I transformed coding from a weakness into a foundational strength.
+                        </p>
+                    </div>
+
+                    <!-- Struggle 3: The Jomolhari Trek (Physical and Mental Endurance) -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl card border-t-4 border-red-500">
+                        <h3 class="text-xl font-semibold text-red-600 mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            The Jomolhari Trek: A Test of Endurance
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            During the nature retreat trek to Jomolhari, the high altitude and severe weather conditions pushed my physical and mental limits, leading to moments of genuine exhaustion and doubt about finishing.
+                        </p>
+                        <p class="mt-2 text-sm font-medium text-red-500">
+                            <strong class="text-gray-900">Result:</strong> I relied on the training and encouragement of my team. By breaking the journey down into small, manageable segments and applying mindful focus, I completed the trek and gained profound confidence in my physical and mental fortitude.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- Projects Section -->
+            <section id="projects" class="page-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-700">Projects & Ventures</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Project 1: Makers Gone Wild -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl card">
+                        <h3 class="text-xl font-semibold text-indigo-600 mb-2 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.22 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            "Makers Gone Wild" (Product Design)
+                        </h3>
+                        <p class="text-gray-600 mb-2 font-semibold">Outcome & Skills:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                            <li><strong class="text-indigo-500">Product Lifecycle Management:</strong> Managed the end-to-end process from ideation (sketching) to prototyping and final fabrication of small functional goods (e.g., keychains, laptop stands).</li>
+                            <li><strong class="text-indigo-500">Material Science:</strong> Gained hands-on experience working with different materials (wood, plastic) to optimize durability and cost-effectiveness.</li>
+                            <li><strong class="text-indigo-500">Aesthetic Design:</strong> Successfully balanced product functionality with visual appeal to meet target user demands.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Project 2: STEM Challenge -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl card">
+                        <h3 class="text-xl font-semibold text-indigo-600 mb-2 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.674m-4.674 0a1 1 0 00-1 1v2m1-2v2m4.674-2a1 1 0 00-1 1v2m1-2v2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h18M3 13a2 2 0 01-2-2V7a2 2 0 012-2h18a2 2 0 012 2v4a2 2 0 01-2 2H3z" />
+                            </svg>
+                            STEM Challenge: Self-Controlled Car
+                        </h3>
+                        <p class="text-gray-600 mb-2 font-semibold">Outcome & Skills:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                            <li><strong class="text-indigo-500">Hardware Integration:</strong> Successfully integrated microcontrollers, sensors, and actuators to create a fully autonomous vehicle model.</li>
+                            <li><strong class="text-indigo-500">Algorithm Development:</strong> Programmed the car's logic (likely using C++ or Python) for obstacle detection and path following, ensuring efficient operation.</li>
+                            <li><strong class="text-indigo-500">Team Collaboration:</strong> Worked in a team to solve complex engineering challenges under a tight deadline.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Project 3: Market Management Codes -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl card">
+                        <h3 class="text-xl font-semibold text-indigo-600 mb-2 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17.25l-2.25-2.25L5.25 17.25M6 6h6m6 0h-6m6 0a2 2 0 11-4 0 2 2 0 014 0zm-6 0h6m-6 0a2 2 0 11-4 0 2 2 0 014 0zm-6 0v6m-6 0h6m-6 0a2 2 0 11-4 0 2 2 0 014 0zm-6 0v6a2 2 0 10-4 0v6h-2a2 2 0 10-4 0v6" />
+                            </svg>
+                            Market Management Codes (Python)
+                        </h3>
+                        <p class="text-gray-600 mb-2 font-semibold">Outcome & Skills:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                            <li><strong class="text-indigo-500">Data Automation:</strong> Developed Python scripts to streamline basic financial tracking and inventory management for a mock market scenario.</li>
+                            <li><strong class="text-indigo-500">Algorithmic Thinking:</strong> Applied conditional logic and data structures (lists, dictionaries) to manage stock levels and sales transactions efficiently.</li>
+                            <li><strong class="text-indigo-500">Programming Foundation:</strong> Solidified foundational programming concepts relevant to data science and business operations.</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Project 4: Theater Performances -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl card">
+                        <h3 class="text-xl font-semibold text-indigo-600 mb-2 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01m-6 4h.01m-6 4h.01" />
+                            </svg>
+                            Theater Performances (Acting)
+                        </h3>
+                        <p class="text-gray-600 mb-2 font-semibold">Outcome & Skills:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                            <li><strong class="text-indigo-500">Public Speaking & Confidence:</strong> Successfully portrayed challenging roles, including the King in "Comedy of Errors," significantly boosting stage presence and vocal clarity.</li>
+                            <li><strong class="text-indigo-500">Team Synchronization:</strong> Worked closely with the cast and crew, learning the importance of precise timing and collaborative execution in live performance.</li>
+                            <li><strong class="text-indigo-500">Empathy & Character Analysis:</strong> Developed strong analytical skills in understanding and embodying complex characters like the playboy in "Check Please."</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Courses Section -->
+            <section id="courses" class="page-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-700">Online Courses</h2>
+                <div class="bg-white p-6 rounded-lg shadow-xl">
+                    <p class="text-lg leading-relaxed mb-4">
+                        I am dedicated to continuous learning and have completed several online courses to expand my knowledge and skills, with a strong focus on engineering and technology:
+                    </p>
+                    <ul class="list-disc list-inside space-y-4 text-gray-700">
+                        <li>
+                            <strong class="font-semibold text-indigo-600">Introduction to Civil Engineering</strong> (Coursera)
+                            <p class="text-sm text-gray-500">
+                                <span class="font-medium text-gray-800">Achieved:</span> Comprehensive understanding of structural analysis, materials science, and urban planning principles, directly supporting my career goal in sustainable infrastructure development.
+                            </p>
+                        </li>
+                        <li>
+                            <strong class="font-semibold text-indigo-600">Graphic Design Fundamentals</strong> (Udemy)
+                            <p class="text-sm text-gray-500">
+                                <span class="font-medium text-gray-800">Achieved:</span> Mastery of design software (e.g., Illustrator principles) and color theory. Applied these skills to create visual assets for my YouTube channel and 'Makers Gone Wild' branding.
+                            </p>
+                        </li>
+                        <li>
+                            <strong class="font-semibold text-indigo-600">Python for Everybody Specialization</strong> (Coursera)
+                            <p class="text-sm text-gray-500">
+                                <span class="font-medium text-gray-800">Achieved:</span> Proficiency in data structures, networking, and database interaction using SQL. This specialization provided the backend knowledge for developing the market management codes.
+                            </p>
+                        </li>
+                        <li>
+                            <strong class="font-semibold text-indigo-600">Project Management Professional (PMP)</strong> (edX)
+                            <p class="text-sm text-gray-500">
+                                <span class="font-medium text-gray-800">Achieved:</span> Proficient in the five process groups of project management (Initiating, Planning, Executing, Monitoring/Controlling, and Closing). Applied structured planning to large-scale school and personal projects.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl mt-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Certificates & Achievements</h3>
+                    <ul class="list-none space-y-4">
+                        <li>
+                            <strong class="font-semibold text-indigo-600">Please provide your certificate names and a brief description, and I will add them here.</strong>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Interests Section (formerly Documents) -->
+            <section id="interests" class="page-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-700">My Key Interests</h2>
+                <div class="bg-white p-6 rounded-lg shadow-xl">
+                    <p class="text-lg leading-relaxed mb-6 text-gray-700">
+                        My life outside of academics is enriched by a blend of athletic, creative, and intellectual pursuits that fuel my curiosity and well-being.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Interest 1: Sports -->
+                        <div class="p-4 bg-indigo-50 rounded-lg flex items-start space-x-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m0 0a2 2 0 002 2h4a2 2 0 002-2v-6m0-4h2m-2 0h2" />
+                            </svg>
+                            <div>
+                                <h3 class="text-xl font-semibold text-indigo-600">Football & Basketball</h3>
+                                <p class="text-sm text-gray-600">I enjoy the competitive spirit and teamwork involved in both football and basketball. It’s my primary way to relax and stay physically active.</p>
+                            </div>
+                        </div>
+
+                        <!-- Interest 2: Nature Photography -->
+                        <div class="p-4 bg-indigo-50 rounded-lg flex items-start space-x-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L15 15m0 0l4.14 4.14a2 2 0 01-.856 2.572A2 2 0 0116.5 21H6a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v1m-4 10h.01M16 12a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <div>
+                                <h3 class="text-xl font-semibold text-indigo-600">Nature & Bird Watching Photography</h3>
+                                <p class="text-sm text-gray-600">Inspired by mountaineering trips, I developed a passion for capturing the serene beauty of the outdoors, particularly through bird watching.</p>
+                            </div>
+                        </div>
+
+                        <!-- Interest 3: Math & Problem Solving -->
+                        <div class="p-4 bg-indigo-50 rounded-lg flex items-start space-x-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m-3 3v6m0-3h3m-6 0h3m-6 0h-3m3 3v3m0-3h3m-6 0h3m-6 0h-3" />
+                            </svg>
+                            <div>
+                                <h3 class="text-xl font-semibold text-indigo-600">Solving Complex Math Problems</h3>
+                                <p class="text-sm text-gray-600">The thrill of logical deduction and finding precise solutions in mathematics is a key intellectual hobby that connects directly to my engineering aspirations.</p>
+                            </div>
+                        </div>
+
+                        <!-- Interest 4: Theater and Acting -->
+                        <div class="p-4 bg-indigo-50 rounded-lg flex items-start space-x-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01m-6 4h.01m-6 4h.01" />
+                            </svg>
+                            <div>
+                                <h3 class="text-xl font-semibold text-indigo-600">Acting & Creative Expression</h3>
+                                <p class="text-sm text-gray-600">Performing in plays like "Comedy of Errors" and "Check Please" has helped me develop confidence, empathy, and strong communication skills.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mountaineering Experiment Section -->
+            <section id="mountaineering-experiment" class="page-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-700">The Mountaineering Experiment</h2>
+                <div class="bg-white p-6 rounded-lg shadow-xl">
+                    <p class="text-lg leading-relaxed mb-4">
+                        During my mountaineering adventure, I conducted an experiment to test the effects of altitude on the boiling point of water. I wanted to see how much the lower atmospheric pressure at high elevations would affect the time it took to cook certain foods.
+                    </p>
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-2 text-indigo-600">Methodology:</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li>Used a portable stove and a thermometer to measure water temperature.</li>
+                            <li>Recorded the time to boil at different altitudes (base camp vs. higher elevations).</li>
+                            <li>Noted the time required to cook pasta to an al dente state at each location.</li>
+                        </ul>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-2 text-indigo-600">Findings:</h3>
+                        <p class="leading-relaxed text-gray-700">
+                            The experiment confirmed that water boils at a lower temperature at higher altitudes. This resulted in significantly longer cooking times for the pasta, highlighting the practical challenges of cooking and nutrition in high-altitude environments.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-8 text-center rounded-t-3xl shadow-inner">
+            <div class="container mx-auto px-6">
+                <p>&copy; 2024 Dhan Bahadur. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <!-- Scroll to Top Button -->
+        <button id="scrollToTopBtn" class="fixed bottom-6 right-6 p-4 bg-indigo-600 text-white rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-110 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+        
+    </div>
+
+    <script>
+        // Get all navigation links and page sections
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageSections = document.querySelectorAll('.page-section');
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        const menuToggleBtn = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar");
+
+        // Function to show a specific page section and hide others
+        function showPage(pageId) {
+            // Hide all sections first
+            pageSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            // Show the target section
+            const targetSection = document.getElementById(pageId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        }
+
+        // Handle initial load based on URL hash
+        const initialHash = window.location.hash.substring(1);
+        if (initialHash) {
+            showPage(initialHash);
+        } else {
+            showPage('home'); // Default to home page if no hash is present
+        }
+
+        // Add click event listeners to navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const pageId = this.getAttribute('href').substring(1);
+                showPage(pageId);
+                history.pushState(null, '', `#${pageId}`); // Update URL without reloading
+                // Close the sidebar on mobile after clicking a link
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+
+        // Handle back/forward browser button
+        window.addEventListener('popstate', () => {
+            const newHash = window.location.hash.substring(1);
+            showPage(newHash || 'home');
+        });
+
+        // Toggle the mobile sidebar visibility
+        menuToggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Scroll to top button functionality
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        // Scroll to the top when the button is clicked
+        scrollToTopBtn.addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
